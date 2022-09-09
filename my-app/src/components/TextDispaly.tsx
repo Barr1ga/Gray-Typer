@@ -1,21 +1,108 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from "react";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { keyPressed } from "../features/keyboard/keyboardSlice";
+import { FaClock } from "react-icons/fa";
 
-interface TextDisplayProps {
+interface TextDisplayProps {}
 
-}
+export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
+  const dispatch = useAppDispatch();
+  const [typedText, setTypedText] = useState<string>("");
+  const [errorText, setErrorText] = useState<string>("");
+  const [text, setText] = useState<string>(
+    "Lorem ipsum dolor sit amet consectetur adipsicing elit. Maxime molliti, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium optio, eaque rerum! Provident."
+  );
 
-const text = "Lorem ipsum dolor sit amet consectetur adipsicing elit. Maxime molliti, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium optio, eaque rerum! Provident.";
+  const { keyIndex } = useAppSelector((state) => state.keyboard);
 
-export const TextDisplay: React.FC<TextDisplayProps> = ({ }) => {
-    return (<>
-        <div className='type'>
-            <div className="details">
-                <h3>0/50</h3>
-                <h3>73%</h3>
-            </div>
-            <span className="text">
-                {text}
-            </span>
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  const handleBackPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const key = e.key;
+
+    // backspace
+    if (key === "Backspace") {
+      if (errorText.length !== 0) {
+        setErrorText(errorText.slice(0, -1));
+        return;
+      }
+
+      if (typedText.length !== 0) {
+        const deletedCharacter = typedText.slice(-1);
+        setText(deletedCharacter.concat(text));
+        setTypedText(typedText.slice(0, -1));
+      }
+      return;
+    }
+
+    if (key.length > 2) {
+      return;
+    }
+
+    console.log(keyIndex);
+    console.log(keyIndex);
+    console.log(keyIndex.findIndex((key) => key == key.toLocaleLowerCase()))
+    dispatch(keyPressed(key));
+
+    // wrong character
+    if (key !== text.charAt(0)) {
+      if (errorText.length === 20) {
+        return;
+      }
+
+      setErrorText(errorText.concat(key));
+      return;
+    }
+
+    // correct character
+    if (errorText.length > 0) {
+      return;
+    }
+
+    setTypedText(typedText.concat(key.charAt(key.length - 1)));
+    setText(text.slice(1));
+  };
+
+  //   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {};
+
+  const handleFocus = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
+  return (
+    <>
+      <div className="type">
+        <div className="details">
+          <h3>0/50</h3>
+          <h3>73%</h3>
+          <h3>
+            <FaClock></FaClock>5.00s
+          </h3>
         </div>
-    </>);
-}
+        <span className="text" onClick={handleFocus}>
+          <input
+            type="text"
+            ref={inputRef}
+            onKeyDown={(e) => handleBackPressed(e)}
+            // onChange={(e) => handleChange(e)}
+            className="type-field"
+          ></input>
+          <p>
+            <span className="typed">{typedText}</span>
+            <span className="error-typed">{errorText}</span>
+            <span className="caret">|</span>
+            <span className="untyped">{text}</span>
+          </p>
+        </span>
+      </div>
+    </>
+  );
+};

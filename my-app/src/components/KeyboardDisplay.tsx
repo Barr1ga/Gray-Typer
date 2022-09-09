@@ -1,54 +1,106 @@
-import React from 'react'
+import React, { useRef, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { keyPressed } from "../features/keyboard/keyboardSlice";
 
-interface KeyboardDisplayProps {
+interface KeyboardDisplayProps {}
 
-}
+export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({}) => {
+  const dispatch = useAppDispatch();
+  const { pressedKey } = useAppSelector((state) => state.keyboard);
 
-export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({ }) => {
-  return (<>
-    <div className='keyboard'>
-      <span>
-        <div className='key'>q</div>
-        <div className='key'>w</div>
-        <div className='key'>e</div>
-        <div className='key'>r</div>
-        <div className='key'>t</div>
-        <div className='key'>y</div>
-        <div className='key'>u</div>
-        <div className='key'>i</div>
-        <div className='key'>o</div>
-        <div className='key'>p</div>
-        <div className='key'>{"["}</div>
-        <div className='key'>{"]"}</div>
-      </span>
-      <span>
-        <div className='key'>a</div>
-        <div className='key'>s</div>
-        <div className='key'>d</div>
-        <div className='key'>f</div>
-        <div className='key'>g</div>
-        <div className='key'>h</div>
-        <div className='key'>j</div>
-        <div className='key'>k</div>
-        <div className='key'>l</div>
-        <div className='key'>;</div>
-        <div className='key'>'</div>
-      </span>
-      <span>
-        <div className='key'>z</div>
-        <div className='key'>x</div>
-        <div className='key'>c</div>
-        <div className='key'>v</div>
-        <div className='key'>b</div>
-        <div className='key'>n</div>
-        <div className='key'>m</div>
-        <div className='key'>,</div>
-        <div className='key'>.</div>
-        <div className='key'>/</div>
-      </span>
-      <span>
-        <div className='space'>—</div>
-      </span>
-    </div>
-  </>);
-}
+  const keyRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const HandleKeyPressed = (idx: number, key: string) => {
+    dispatch(keyPressed(key));
+  };
+
+  const firstRowKeys = [
+    "q",
+    "w",
+    "e",
+    "r",
+    "t",
+    "y",
+    "u",
+    "i",
+    "o",
+    "p",
+    "[",
+    "]",
+  ];
+  const secondRowKeys = ["a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'"];
+  const thirdRowKeys = ["z", "x", "c", "v", "b", "n", "m", ",", ".", "/"];
+
+  useEffect(() => {
+    if (keyRefs.current) {
+      
+    }
+  }, [pressedKey])
+  
+
+  return (
+    <>
+      <div className="keyboard">
+        <span>
+          {firstRowKeys.map((key, idx) => (
+            <div
+              className="key"
+              ref={(ref) => (keyRefs.current[idx] = ref)}
+              onClick={() => HandleKeyPressed(idx, key)}
+            >
+              {key}
+            </div>
+          ))}
+        </span>
+        <span>
+          {secondRowKeys.map((key, idx) => (
+            <div
+              key={key + idx}
+              className="key"
+              ref={(ref) => (keyRefs.current[idx + firstRowKeys.length] = ref)}
+              onClick={() => HandleKeyPressed(idx, key)}
+            >
+              {key}
+            </div>
+          ))}
+        </span>
+        <span>
+          {thirdRowKeys.map((key, idx) => (
+            <div
+              key={key + idx}
+              className="key"
+              ref={(ref) =>
+                (keyRefs.current[
+                  idx + firstRowKeys.length + secondRowKeys.length
+                ] = ref)
+              }
+              onClick={() => HandleKeyPressed(idx, key)}
+            >
+              {key}
+            </div>
+          ))}
+        </span>
+        <span>
+          <div
+            className="space"
+            ref={(ref) =>
+              (keyRefs.current[
+                firstRowKeys.length + secondRowKeys.length + thirdRowKeys.length
+              ] = ref)
+            }
+            onClick={() =>
+              HandleKeyPressed(
+                firstRowKeys.length +
+                  secondRowKeys.length +
+                  thirdRowKeys.length,
+                " "
+              )
+            }
+          >
+            —
+          </div>
+        </span>
+      </div>
+    </>
+  );
+};
