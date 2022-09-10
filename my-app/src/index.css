@@ -31,7 +31,7 @@ a {
 
 a:hover {
   text-decoration: none;
-  color: #237bff;
+  color: #ec59ff;
 }
 
 button {
@@ -153,8 +153,8 @@ img {
   padding: 0;
   font-size: 2.3rem;
   line-height: 0px;
-  color: #237bff;
-  white-space: normal; 
+  color: #ec59ff;
+  white-space: normal;
 }
 
 .type .details {
@@ -162,6 +162,12 @@ img {
   gap: 30px;
 }
 
+.type .details h3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
 
 /* type css */
 .type-field {
@@ -175,7 +181,6 @@ img {
   box-shadow: none;
   outline: none;
 }
-
 
 /* heder css */
 .header {
@@ -265,8 +270,8 @@ img {
 }
 
 .criteria .item .on {
-  background: #237bff;
-  border: 1px solid #237bff;
+  background: #ec59ff;
+  border: 1px solid #ec59ff;
   transition: 0.2s ease-out 0s;
 }
 
@@ -323,20 +328,15 @@ img {
   width: 45px;
 }
 
-.keyboard span .space:active,
-.keyboard span .key:active {
-  transform: scale(0.9);
-  transition: 0.2s ease-out 0s;
-}
-
 .keyboard span .key,
 .keyboard span .space {
+  background: transparent;
   border-radius: 10px;
   border: 2px solid #fff;
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 30%;
+  opacity: 0.3;
   font-weight: 400;
   font-size: 1.2rem;
   cursor: pointer;
@@ -345,6 +345,13 @@ img {
 
 .keyboard span .key:hover,
 .keyboard span .space:hover {
-  border-color: #17aaff;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.keyboard span .clicked {
+  transform: scale(0.9);
+  transition: 0.2s ease-out 0s;
   opacity: 1;
+  border-color: #ec59ff;
+  box-shadow: 0 0 15px #ec59ff;
 }

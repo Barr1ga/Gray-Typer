@@ -7,6 +7,7 @@ import {
   FaGithub,
   FaEnvelope,
 } from "react-icons/fa";
+import { useAppSelector } from "../app/hooks";
 
 interface HeaderProps {}
 

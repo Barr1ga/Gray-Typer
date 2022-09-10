@@ -4,101 +4,112 @@ import { keyPressed } from "../features/keyboard/keyboardSlice";
 
 interface KeyboardDisplayProps {}
 
+const firstRowKeys = [
+  "q",
+  "w",
+  "e",
+  "r",
+  "t",
+  "y",
+  "u",
+  "i",
+  "o",
+  "p",
+  "[",
+  "]",
+];
+const secondRowKeys = ["a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'"];
+const thirdRowKeys = ["z", "x", "c", "v", "b", "n", "m", ",", ".", "/"];
+
 export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({}) => {
   const dispatch = useAppDispatch();
-  const { pressedKey } = useAppSelector((state) => state.keyboard);
 
-  const keyRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const { pressedKeys } = useAppSelector((state) => state.keyboard);
 
+  const keyRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  
   const HandleKeyPressed = (idx: number, key: string) => {
-    dispatch(keyPressed(key));
+    dispatch(keyPressed(idx));
   };
 
-  const firstRowKeys = [
-    "q",
-    "w",
-    "e",
-    "r",
-    "t",
-    "y",
-    "u",
-    "i",
-    "o",
-    "p",
-    "[",
-    "]",
-  ];
-  const secondRowKeys = ["a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'"];
-  const thirdRowKeys = ["z", "x", "c", "v", "b", "n", "m", ",", ".", "/"];
-
-  useEffect(() => {
-    if (keyRefs.current) {
-      
-    }
-  }, [pressedKey])
-  
+  console.log(pressedKeys);
 
   return (
     <>
       <div className="keyboard">
         <span>
           {firstRowKeys.map((key, idx) => (
-            <div
-              className="key"
+            <button
+              className={pressedKeys.includes(idx) ? "key clicked" : "key"}
+              // className="key"
               ref={(ref) => (keyRefs.current[idx] = ref)}
               onClick={() => HandleKeyPressed(idx, key)}
             >
               {key}
-            </div>
+            </button>
           ))}
         </span>
         <span>
           {secondRowKeys.map((key, idx) => (
-            <div
-              key={key + idx}
-              className="key"
+            <button
+              key={key + idx + firstRowKeys.length}
+              className={pressedKeys.includes(idx + firstRowKeys.length) ? "key clicked" : "key"}
+              // className="key"
+
               ref={(ref) => (keyRefs.current[idx + firstRowKeys.length] = ref)}
-              onClick={() => HandleKeyPressed(idx, key)}
+              onClick={() => HandleKeyPressed(idx + firstRowKeys.length, key)}
             >
               {key}
-            </div>
+            </button>
           ))}
         </span>
         <span>
           {thirdRowKeys.map((key, idx) => (
-            <div
-              key={key + idx}
-              className="key"
+            <button
+              key={key + idx + firstRowKeys.length + secondRowKeys.length}
+              className={pressedKeys.includes(idx + firstRowKeys.length + secondRowKeys.length) ? "key clicked" : "key"}
+              // className="key"
+
               ref={(ref) =>
                 (keyRefs.current[
                   idx + firstRowKeys.length + secondRowKeys.length
                 ] = ref)
               }
-              onClick={() => HandleKeyPressed(idx, key)}
+              onClick={() =>
+                HandleKeyPressed(
+                  idx + firstRowKeys.length + secondRowKeys.length,
+                  key
+                )
+              }
             >
               {key}
-            </div>
+            </button>
           ))}
         </span>
         <span>
-          <div
-            className="space"
+          <button
+            className={pressedKeys.includes(firstRowKeys.length + secondRowKeys.length + thirdRowKeys.length + 1) ? "space clicked" : "space"}
+            // className="space"
             ref={(ref) =>
               (keyRefs.current[
-                firstRowKeys.length + secondRowKeys.length + thirdRowKeys.length
+                firstRowKeys.length +
+                  secondRowKeys.length +
+                  thirdRowKeys.length +
+                  1
               ] = ref)
             }
             onClick={() =>
               HandleKeyPressed(
                 firstRowKeys.length +
                   secondRowKeys.length +
-                  thirdRowKeys.length,
-                " "
+                  thirdRowKeys.length +
+                  1,
+                "  "
               )
             }
           >
-            —
-          </div>
+            space
+          </button>
         </span>
       </div>
     </>

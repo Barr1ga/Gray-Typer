@@ -1,12 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 interface Keyboard {
-    pressedKey: string,
+    display: any
+    typing: boolean,
+    pressedKeys: number[],
     keyIndex: string[],
 }
 
 const initialState: Keyboard = {
-    pressedKey: "",
+    display: {
+        none: {
+            opacity: 0,
+        },
+        block: {
+            opacity: 1,
+        },
+    },
+    typing: false,
+    pressedKeys: [],
     keyIndex: [
         "q",
         "w",
@@ -42,18 +53,28 @@ const initialState: Keyboard = {
         ".",
         "/",
         "'",
-    ]
+        " ",
+    ],
 }
 
 const keyboardSlice = createSlice({
     name: "keyboard",
     initialState,
     reducers: {
-        keyPressed: (state, action: PayloadAction<string>) => {
-            state.pressedKey = action.payload;
+        keyPressed: (state, action: PayloadAction<number>) => {
+            state.pressedKeys.push(action.payload);
+            if (state.pressedKeys.length === 3) {
+                state.pressedKeys.shift();
+            }
+        },
+        removeKeyFromPressed: (state, action: PayloadAction<number>) => {
+            state.pressedKeys = state.pressedKeys.filter((key) => key !== action.payload);
+        },
+        setTyping: (state, action: PayloadAction<boolean>) => {
+            state.typing = action.payload;
         }
     }
 })
 
-export const { keyPressed } = keyboardSlice.actions;
+export const { keyPressed, removeKeyFromPressed, setTyping } = keyboardSlice.actions;
 export default keyboardSlice.reducer;
