@@ -27,13 +27,6 @@ export const Criteria: React.FC<CriteriaProps> = ({ }) => {
         numbers,
         time } = useAppSelector((state) => state.criterias);
 
-    console.log(keyboard,
-        punctuations,
-        uppercase,
-        lowercase,
-        numbers,
-        time);
-
     return (<>
         
         <div className="criteria">

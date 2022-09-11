@@ -5,7 +5,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: #fff;
+  color: #6b6b77;
 }
 
 body {
@@ -13,7 +13,7 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  background-color: #292c31;
+  background-color: #f1f0f5;
 }
 
 #root {
@@ -26,12 +26,10 @@ body {
 
 a {
   text-decoration: none;
-  color: #000;
 }
 
 a:hover {
   text-decoration: none;
-  color: #ec59ff;
 }
 
 button {
@@ -53,8 +51,6 @@ ul {
 
 small {
   font-size: 0.8rem;
-  color: #fff;
-  opacity: 0.4;
 }
 
 li {
@@ -133,19 +129,19 @@ img {
   height: 100%;
   font-family: "Roboto Mono", monospace;
   font-size: 1.5rem;
-  font-weight: 400;
+  font-weight: 500;
   /* word-spacing: 0.5rem; */
   text-align: left;
   letter-spacing: 0.05rem;
 }
 
 .type .text .untyped {
-  opacity: 0.3;
-  font-weight: 300;
+  opacity: 0.5;
+  font-weight: 400;
 }
 
 .type .text .error-typed {
-  color: rgb(211, 62, 62);
+  color: rgb(255, 92, 92);
 }
 
 .type .text .caret {
@@ -153,7 +149,7 @@ img {
   padding: 0;
   font-size: 2.3rem;
   line-height: 0px;
-  color: #ec59ff;
+  color: #3dd68f;
   white-space: normal;
 }
 
@@ -205,6 +201,7 @@ img {
   margin-bottom: 30px;
   display: flex;
   justify-content: space-between;
+  opacity: .5;
 }
 
 .footer .nav {
@@ -235,7 +232,7 @@ img {
   width: 3px;
   border-radius: 5px;
   height: 25px;
-  background-color: #fff;
+  background-color: #6b6b77;
   opacity: 0.3;
   margin: 0 10px;
 }
@@ -244,8 +241,9 @@ img {
   padding: 15px;
   height: 45px;
   border: none;
-  background-color: rgba(0, 0, 0, 0.219);
-  border-radius: 10px;
+  border-radius: 15px;
+  background: #f1f0f5;
+  box-shadow: 5px 5px 10px #dad9e9, -5px -5px 10px #ffffff;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -255,7 +253,12 @@ img {
   transition: 0.2s ease-out 0s;
 }
 
+.criteria .item:hover {
+  background: #dad9e9;
+}
+
 .criteria .item:active {
+  background: #dad9e9;
   transform: scale(0.9);
   transition: 0.2s ease-out 0s;
 }
@@ -285,7 +288,7 @@ img {
 }
 
 .extra-buttons .key {
-  background: rgba(255, 255, 255, 0.3);
+  background: #6b6b773a;
   border-radius: 5px;
   padding: 2px 7px;
   display: flex;
@@ -309,13 +312,13 @@ img {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 10px;
 }
 
 .keyboard span {
   display: flex;
   justify-content: center;
-  gap: 3px;
+  gap: 10px;
 }
 
 .keyboard span .space {
@@ -330,13 +333,14 @@ img {
 
 .keyboard span .key,
 .keyboard span .space {
-  background: transparent;
-  border-radius: 10px;
-  border: 2px solid #fff;
+  border: none;
+  border-radius: 20px;
+  background: #f1f0f5;
+  box-shadow: 5px 5px 10px #dad9e9, -5px -5px 10px #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0.3;
+  /* opacity: 0.5; */
   font-weight: 400;
   font-size: 1.2rem;
   cursor: pointer;
@@ -345,13 +349,18 @@ img {
 
 .keyboard span .key:hover,
 .keyboard span .space:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: #dad9e9;
+  /* background: rgba(255, 255, 255, 0.3); */
 }
 
-.keyboard span .clicked {
+.keyboard span .clicked,
+  .keyboard span .key:active,
+  .keyboard span .space:active {
+  background: #dad9e9;
+  box-shadow: 1px 1px 10px #dad9e9, -1px -1px 10px #ffffff;
   transform: scale(0.9);
   transition: 0.2s ease-out 0s;
-  opacity: 1;
-  border-color: #ec59ff;
-  box-shadow: 0 0 15px #ec59ff;
+  /* opacity: 1; */
+  /* border-color: #ec59ff; */
+  /* box-shadow: 0 0 15px #ec59ff; */
 }
