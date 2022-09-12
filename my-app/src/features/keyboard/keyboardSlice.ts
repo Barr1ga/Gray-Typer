@@ -10,9 +10,11 @@ interface Keyboard {
 const initialState: Keyboard = {
     display: {
         none: {
+            transition: ".3s ease-out 0s",
             opacity: 0,
         },
         block: {
+            transition: ".3s ease-out 0s",
             opacity: 1,
         },
     },

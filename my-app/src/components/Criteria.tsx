@@ -34,26 +34,26 @@ export const Criteria: React.FC<CriteriaProps> = ({ }) => {
                 <FaGlobeAmericas></FaGlobeAmericas>
                 English
             </button>
-            <button type="button" className="item" onClick={() => dispatch(toggleKeyboard())}>
+            <button type="button" className={keyboard ? "item item-on" : "item"} onClick={() => dispatch(toggleKeyboard())}>
                 <div className={keyboard ? "on" : "off"}>
                 </div><FaKeyboard></FaKeyboard> Keyboard</button>
             <div className="separator"></div>
-            <button type="button" className="item" onClick={() => dispatch(togglePunctuation())}>
+            <button type="button" className={punctuations ? "item item-on" : "item"} onClick={() => dispatch(togglePunctuation())}>
                 <div className={punctuations ? "on" : "off"}></div>
                 <Punctuations></Punctuations> Punctuations
             </button>
-            <button type="button" className="item" onClick={() => dispatch(toggleUpperCase())}>
+            <button type="button" className={uppercase ? "item item-on" : "item"} onClick={() => dispatch(toggleUpperCase())}>
                 <div className={uppercase ? "on" : "off"}></div>
                 <UpperCase></UpperCase> Uppercase
             </button>
-            <button type="button" className="item" onClick={() => dispatch(toggleLowerCase())}>
+            <button type="button" className={lowercase ? "item item-on" : "item"} onClick={() => dispatch(toggleLowerCase())}>
                 <div className={lowercase ? "on" : "off"}></div>
                 <LowerCase></LowerCase> Lowercase</button>
-            <button type="button" className="item" onClick={() => dispatch(toggleNumbers())}>
+            <button type="button" className={numbers ? "item item-on" : "item"} onClick={() => dispatch(toggleNumbers())}>
                 <div className={numbers ? "on" : "off"}></div>
                 <Numbers></Numbers> Numbers
             </button>
-            <button type="button" className="item" onClick={() => dispatch(toggleTime())}>
+            <button type="button" className={time ? "item item-on" : "item"} onClick={() => dispatch(toggleTime())}>
                 <div className={time ? "on" : "off"}></div>
                 <FaClock></FaClock> Time
             </button>

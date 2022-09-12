@@ -70,7 +70,7 @@ export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
           <p>
             <span className="typed">{typedText}</span>
             <span className="error-typed">{errorText}</span>
-            <span className="caret">|</span>
+            <span className={typing ? "caret" : "caret-blinking"}>|</span>
             <span className="untyped">{text}</span>
           </p>
         </span>
