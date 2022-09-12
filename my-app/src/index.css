@@ -149,11 +149,13 @@ img {
   /* word-spacing: 0.5rem; */
   text-align: left;
   letter-spacing: 0.05rem;
+  cursor: pointer;
 }
 
 .type .text .untyped {
   opacity: 0.5;
   font-weight: 400;
+  cursor: pointer;
 }
 
 .type .text .error-typed {
@@ -272,7 +274,7 @@ img {
   height: 45px;
   border: none;
   border-radius: 15px;
-  background: #f1f0f5;
+  background: #ebeaf2;
   box-shadow: 5px 5px 10px #dad9e9, -5px -5px 10px #ffffff;
   display: flex;
   justify-content: flex-start;
@@ -344,17 +346,30 @@ img {
 
 /* keyboard css */
 
+.keyboard-panel {
+  transition: 0.2s ease-out 0s;
+}
+
+.keyboard-panel-hide button {
+  height: 0px !important;
+  width: 0px !important;
+  transition: 0.2s ease-out 0s;
+  font-size: 0rem !important;
+}
+
 .keyboard {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  transition: 0.2s ease-out 0s;
 }
 
 .keyboard span {
   display: flex;
   justify-content: center;
   gap: 10px;
+  transition: 0.2s ease-out 0s;
 }
 
 .keyboard span .space {

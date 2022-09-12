@@ -10,6 +10,8 @@ import {
     incrementTypedWordsCount,
     setAccuracy,
 } from "../features/result/resultSlice";
+import useRandomIntArray from "./useRandomIntArray";
+
 const randomWords = require('random-words');
 
 const useTextHandler = () => {
@@ -20,17 +22,61 @@ const useTextHandler = () => {
         ""
     );
 
+    const { randomInts, getRandomInt } = useRandomIntArray();
+
     const { keyIndex, typing } = useAppSelector(
         (state) => state.keyboard
     );
+
+    const {
+        language,
+        keyboard,
+        punctuations,
+        uppercase,
+        lowercase,
+        numbers,
+        time,
+    } = useAppSelector((state) => state.criterias);
 
     const { errorCount, typedCharactersCount } =
         useAppSelector((state) => state.result);
 
     const initializeText = () => {
-        setText(randomWords({ exactly: 25, join: ' ' }));
-    }
+        const wordsArray = randomWords({ exactly: 25 })
+        getRandomInt();
 
+        if (uppercase) {
+            wordsArray.forEach((word: string, idx: number) => {
+                if (randomInts.find((int) => int === idx)) {
+                    wordsArray[idx] = wordsArray[idx].
+                        charAt(0).
+                        toUpperCase().
+                        concat(wordsArray[idx].
+                            slice(1));
+
+                }
+            })
+        }
+        
+        // if (punctuations) {
+        //     setText();
+        // }
+        
+        // if (uppercase) {
+            //     setText();
+            // }
+            
+            // if (lowercase) {
+                //     setText();
+                // }
+                
+                // if (numbers) {
+                    //     setText();
+        // }
+
+        setText(wordsArray.join(" "));
+    }
+    
     useEffect(() => {
         dispatch(setAccuracy());
     }, [errorCount, typedCharactersCount]);

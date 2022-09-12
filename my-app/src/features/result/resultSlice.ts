@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface ResultState {
+    timeStarted: TimeRanges | null = null,
+    wpm: number,
     errorCount: number,
     typedCharactersCount: number,
     typedWordsCount: number,
@@ -8,6 +10,8 @@ interface ResultState {
 }
 
 const initialState: ResultState = {
+    timeStarted: null,
+    wpm: 0,
     errorCount: 0,
     typedCharactersCount: 0,
     typedWordsCount: 0,
@@ -30,6 +34,14 @@ const resultSlice = createSlice({
         setAccuracy: (state) => {
             state.accuracy = 100 - ((state.errorCount / state.typedCharactersCount) * 100);
         },
+        setInitialTime: (state) => {
+            state.timeStarted = new Date();
+        }
+        setWpm: (state) => {
+            const timeNow = new Date();
+            const diff = timeNow - state.timeStarted;
+            state.wpm = ;
+        }
     }
 });
 

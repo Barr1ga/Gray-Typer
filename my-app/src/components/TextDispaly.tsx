@@ -1,8 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import {
-  setTyping,
-} from "../features/keyboard/keyboardSlice";
+import { setTyping } from "../features/keyboard/keyboardSlice";
 import { FaClock } from "react-icons/fa";
 import useTextHandler from "../hooks/useTextHandler";
 
@@ -10,25 +8,29 @@ interface TextDisplayProps {}
 
 export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
   const dispatch = useAppDispatch();
-  
+
+  const { text, typedText, errorText, initializeText, handleKeyPressed } =
+    useTextHandler();
+
   const {
-    text,
-    typedText,
-    errorText,
-    initializeText,
-    handleKeyPressed,
-  } = useTextHandler();
+    language,
+    keyboard,
+    punctuations,
+    uppercase,
+    lowercase,
+    numbers,
+    time,
+  } = useAppSelector((state) => state.criterias);
 
   const { display, typing } = useAppSelector((state) => state.keyboard);
 
-  const { typedWordsCount, accuracy } =
-    useAppSelector((state) => state.result);
+  const { typedWordsCount, accuracy } = useAppSelector((state) => state.result);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     initializeText();
-  }, []);
+  }, [language, keyboard, punctuations, uppercase, lowercase, numbers, time]);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -57,6 +59,7 @@ export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
           </h3>
           <h3>{typedWordsCount}/50</h3>
           <h3>{accuracy.toFixed(0)}%</h3>
+          <h3>{80}</h3>
         </div>
         <span className="text" onClick={handleFocus}>
           <input

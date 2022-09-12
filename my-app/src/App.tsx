@@ -18,7 +18,9 @@ function App() {
         </div>
         <div className="type-stack">
           <TextDisplay></TextDisplay>
-          {keyboard && <KeyboardDisplay></KeyboardDisplay>}
+          <div className={keyboard ? "keyboard-panel" : "keyboard-panel keyboard-panel-hide"}>
+            <KeyboardDisplay></KeyboardDisplay>
+          </div>
         </div>
         <div style={typing ? display.none : display.block}>
           <Criteria></Criteria>
