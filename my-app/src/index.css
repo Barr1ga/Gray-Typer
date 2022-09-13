@@ -119,6 +119,61 @@ img {
   gap: 20px;
 }
 
+/* switch css */
+.form-switch {
+  display: inline-block;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.form-switch i {
+  position: relative;
+  display: inline-block;
+  /* margin-right: 0.5rem; */
+  width: 46px;
+  height: 26px;
+  background-color: #c3c2d3;
+  outline: 2px solid #ebeaf2;
+  border-radius: 23px;
+  vertical-align: text-bottom;
+  transition: all 0.3s linear;
+  box-shadow: 3px 3px 10px #dad9e9, -3px -3px 10px #ffffff;
+}
+
+.form-switch i::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 22px;
+  height: 22px;
+  background-color: #ebeaf2;
+
+  border-radius: 11px;
+  box-shadow: 0 2px 2px #878597;
+  transform: translate3d(2px, 2px, 0);
+  transition: all 0.2s ease-in-out;
+  
+}
+.form-switch:active i::after {
+  width: 28px;
+  transform: translate3d(2px, 2px, 0);
+}
+.form-switch:active input:checked + i::after {
+  transform: translate3d(16px, 2px, 0);
+}
+.form-switch input {
+  display: none;
+}
+.form-switch input:checked + i {
+  background-color: #47db8a;
+}
+.form-switch input:checked + i::before {
+  transform: translate3d(18px, 2px, 0) scale3d(0, 0, 0);
+}
+.form-switch input:checked + i::after {
+  transform: translate3d(22px, 2px, 0);
+}
+
 /* custom icons */
 .letter-icon {
   font-size: 1.2rem;
@@ -169,7 +224,7 @@ img {
   font-size: 2.3rem;
   font-weight: 400;
   line-height: 0px;
-  color: #3dd68f;
+  color: #47db8a;
   white-space: normal;
 }
 
@@ -240,15 +295,21 @@ img {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  flex: 0 1 600px;
+  flex: 0 1 500px;
 }
 
 .footer .nav .item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   cursor: pointer;
+}
+
+.footer .nav .item small {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* criteria css */
@@ -269,34 +330,41 @@ img {
   margin: 0 10px;
 }
 
+.criteria .form-switch {
+  display: flex;
+}
+
 .criteria .item {
-  padding: 15px;
+  padding: 10px 10px 10px 10px;
   height: 45px;
   border: none;
-  border-radius: 15px;
+  border-radius: 50px;
   background: #ebeaf2;
+  border-top: 1px solid #fff;
   box-shadow: 5px 5px 10px #dad9e9, -5px -5px 10px #ffffff;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 10px;
   flex-grow: 1;
   cursor: pointer;
+  gap: 10px;
   transition: 0.2s ease-out 0s;
 }
 
-.criteria .item-on {
-  /* font-weight: 800; */
-  /* letter-spacing: -.9rem; */
+.criteria .item span {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  gap: 10px;
 }
 
-.criteria .item:hover {
+/* .criteria .item:hover {
   background: #dad9e9;
-}
+} */
 
 .criteria .item:active {
   background: #dad9e9;
-  transform: scale(0.9);
+  /* transform: scale(0.9); */
   box-shadow: 1px 1px 10px #dad9e9, -1px -1px 10px #ffffff;
   transition: 0.2s ease-out 0s;
 }
@@ -323,6 +391,7 @@ img {
   align-items: center;
   gap: 10px;
   font-size: 0.8rem;
+  cursor: pointer;
 }
 
 .extra-buttons .key {
@@ -332,6 +401,9 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 3px solid #6b6b773a;
+  box-shadow: 1px 1px 5px #dad9e9, -1px -1px 5px #ffffff;
 }
 
 .extra-buttons .combination {
@@ -341,6 +413,7 @@ img {
 
 .extra-buttons .options {
   display: flex;
+  align-items: center;
   gap: 10px;
 }
 
@@ -355,6 +428,7 @@ img {
   width: 0px !important;
   transition: 0.2s ease-out 0s;
   font-size: 0rem !important;
+  opacity: 0; 
 }
 
 .keyboard {
@@ -385,8 +459,9 @@ img {
 .keyboard span .key,
 .keyboard span .space {
   border: none;
-  border-radius: 20px;
+  border-radius:15px;
   background: #ebeaf2;
+  border-top: 1px solid #fff;
   box-shadow: 5px 5px 10px #dad9e9, -5px -5px 10px #ffffff;
   display: flex;
   justify-content: center;

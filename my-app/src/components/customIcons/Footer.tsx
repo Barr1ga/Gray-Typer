@@ -1,21 +1,50 @@
-import React from 'react'
-import { FaDiscord, FaFacebook, FaTwitter, FaGithub, FaEnvelope } from 'react-icons/fa';
+import React from "react";
+import {
+  FaDiscord,
+  FaFacebook,
+  FaTwitter,
+  FaGithub,
+  FaEnvelope,
+} from "react-icons/fa";
 
-interface FooterProps {
+interface FooterProps {}
 
-}
-
-export const Footer: React.FC<FooterProps> = ({ }) => {
-    return (
-        <div className="footer">
-            <small className="logo">© 2020 Graytyper. All Rights Reserved.</small>
-            <ul className="nav">
-                <li className="item"><FaEnvelope></FaEnvelope>Contact</li>
-                <li className="item"><FaFacebook></FaFacebook>Facebook</li>
-                <li className="item"><FaGithub></FaGithub>Github</li>
-                <li className="item"><FaDiscord></FaDiscord>Discord</li>
-                <li className="item"><FaTwitter></FaTwitter>Twitter</li>
-            </ul>
-        </div>
-    );
-}
+export const Footer: React.FC<FooterProps> = ({}) => {
+  return (
+    <div className="footer">
+      <small className="logo">© 2020 Graytyper. All Rights Reserved.</small>
+      <ul className="nav">
+        <li className="item">
+          <small>
+            <FaEnvelope></FaEnvelope>
+          </small>
+          <small>Contact</small>
+        </li>
+        <li className="item">
+          <small>
+            <FaFacebook></FaFacebook>
+          </small>
+          <small>Facebook</small>
+        </li>
+        <li className="item">
+          <small>
+            <FaGithub></FaGithub>
+          </small>
+          <small>Github</small>
+        </li>
+        <li className="item">
+          <small>
+            <FaDiscord></FaDiscord>
+          </small>
+          <small>Discord</small>
+        </li>
+        <li className="item">
+          <small>
+            <FaTwitter></FaTwitter>
+          </small>
+          <small>Twitter</small>
+        </li>
+      </ul>
+    </div>
+  );
+};

@@ -10,11 +10,19 @@ import {
     incrementTypedWordsCount,
     setAccuracy,
 } from "../features/result/resultSlice";
-import useRandomIntArray from "./useRandomIntArray";
+import useRandomInts from "./useRandomInts";
+import useRandomPunctuations from "./useRandomPunctuations"
+import useSound from 'use-sound';
+// import osuClick from '../../public/assets/osu_click.mp3';
 
+const osuClick = require("../assets/osu_click.mp3");
+const punchClick = require("../assets/punch.mp3");
 const randomWords = require('random-words');
 
 const useTextHandler = () => {
+    const [playOsuSfx] = useSound(osuClick);
+    const [playPunchSfx] = useSound(punchClick);
+
     const dispatch = useAppDispatch();
     const [typedText, setTypedText] = useState<string>("");
     const [errorText, setErrorText] = useState<string>("");
@@ -22,7 +30,10 @@ const useTextHandler = () => {
         ""
     );
 
-    const { randomInts, getRandomInt } = useRandomIntArray();
+    const [wordsCount, setWordsCount] = useState<number>(0);
+
+    const { getRandomInts, randomCountInt, getRandomNumbers } = useRandomInts();
+    const { randomPunctuations, getRandomPunctations } = useRandomPunctuations();
 
     const { keyIndex, typing } = useAppSelector(
         (state) => state.keyboard
@@ -42,46 +53,57 @@ const useTextHandler = () => {
         useAppSelector((state) => state.result);
 
     const initializeText = () => {
-        const wordsArray = randomWords({ exactly: 25 })
-        getRandomInt();
+        let wordsArray = randomWords({ exactly: 25 })
 
-        if (uppercase) {
+        if (lowercase && uppercase) {
+            const uppercaseIdx = getRandomInts();
+            console.log(uppercaseIdx)
+
             wordsArray.forEach((word: string, idx: number) => {
-                if (randomInts.find((int) => int === idx)) {
-                    wordsArray[idx] = wordsArray[idx].
-                        charAt(0).
-                        toUpperCase().
-                        concat(wordsArray[idx].
-                            slice(1));
-
+                if (uppercaseIdx.includes(idx)) {
+                    wordsArray[idx] = wordsArray[idx].charAt(0).toUpperCase().concat(wordsArray[idx].slice(1));
                 }
             })
         }
-        
-        // if (punctuations) {
-        //     setText();
-        // }
-        
-        // if (uppercase) {
-            //     setText();
-            // }
-            
-            // if (lowercase) {
-                //     setText();
-                // }
-                
-                // if (numbers) {
-                    //     setText();
-        // }
 
+        if (numbers) {
+            const numberIdxs = getRandomInts();
+            const tempRandCountInt = getRandomNumbers(numberIdxs.length);
+
+            numberIdxs.forEach((number: number, idx: number) => {
+                wordsArray[number] = wordsArray[number].concat(tempRandCountInt[idx]?.toString());
+            })
+        }
+
+        if (punctuations) {
+            const punctuationIdxs = getRandomInts();
+            getRandomPunctations(punctuationIdxs.length);
+
+            randomPunctuations.forEach((punctuation: string, idx: number) => {
+                if (punctuation?.length === 1) {
+                    wordsArray[punctuationIdxs[idx]] = wordsArray[punctuationIdxs[idx]]?.concat(punctuation);
+                } else {
+                    wordsArray[punctuationIdxs[idx]] = punctuation.
+                        charAt(0).concat(wordsArray[punctuationIdxs[idx]]).
+                        concat(punctuation.charAt(punctuation.length - 1));
+                }
+            })
+        }
+
+        if (!lowercase) {
+            wordsArray = wordsArray.map((word: string) => word.toUpperCase());
+        }
+
+        setWordsCount(wordsArray.length);
         setText(wordsArray.join(" "));
     }
-    
+
     useEffect(() => {
         dispatch(setAccuracy());
     }, [errorCount, typedCharactersCount]);
 
     const handleKeyPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        console.log("click")
         const key = e.key;
 
         if (!typing) {
@@ -121,6 +143,7 @@ const useTextHandler = () => {
 
         // wrong character
         if (key !== text.charAt(0)) {
+            playPunchSfx();
             dispatch(incrementErrorCount());
 
             if (errorText.length === 20) {
@@ -143,6 +166,8 @@ const useTextHandler = () => {
             return;
         }
 
+        playOsuSfx();
+        
         if (text.charAt(0) === " ") {
             dispatch(incrementTypedWordsCount());
         }
@@ -151,7 +176,7 @@ const useTextHandler = () => {
         setText(text.slice(1));
     };
 
-    return { text, typedText, errorText, initializeText, handleKeyPressed };
+    return { text, wordsCount, typedText, errorText, initializeText, handleKeyPressed };
 }
 
 export default useTextHandler;

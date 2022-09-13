@@ -38,6 +38,7 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({}) => {
         <span>
           {firstRowKeys.map((key, idx) => (
             <button
+              key={key + idx}
               className={pressedKeys.includes(idx) && typing ? "key clicked" : "key"}
               // className="key"
               ref={(ref) => (keyRefs.current[idx] = ref)}

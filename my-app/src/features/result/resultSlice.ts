@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
+import moment from 'moment';
 interface ResultState {
-    timeStarted: TimeRanges | null = null,
+    timeStarted: string,
     wpm: number,
     errorCount: number,
     typedCharactersCount: number,
@@ -10,7 +10,7 @@ interface ResultState {
 }
 
 const initialState: ResultState = {
-    timeStarted: null,
+    timeStarted: "",
     wpm: 0,
     errorCount: 0,
     typedCharactersCount: 0,
@@ -35,12 +35,13 @@ const resultSlice = createSlice({
             state.accuracy = 100 - ((state.errorCount / state.typedCharactersCount) * 100);
         },
         setInitialTime: (state) => {
-            state.timeStarted = new Date();
-        }
+            state.timeStarted = moment(new Date()).toString();
+        },
         setWpm: (state) => {
-            const timeNow = new Date();
-            const diff = timeNow - state.timeStarted;
-            state.wpm = ;
+            const timeNow = moment(new Date());
+            const duration = moment.duration(timeNow.diff(state.timeStarted));
+            const minutesDuration = duration.asMinutes();
+            state.wpm = (state.typedCharactersCount / 5) / minutesDuration;
         }
     }
 });
@@ -50,5 +51,7 @@ export const {
     incrementErrorCount,
     incrementTypedCharactersCount,
     setAccuracy,
+    setInitialTime,
+    setWpm,
 } = resultSlice.actions;
 export default resultSlice.reducer;

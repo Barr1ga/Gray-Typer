@@ -1,15 +1,18 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setTyping } from "../features/keyboard/keyboardSlice";
 import { FaClock } from "react-icons/fa";
 import useTextHandler from "../hooks/useTextHandler";
+import { setInitialTime, setWpm } from "../features/result/resultSlice";
 
 interface TextDisplayProps {}
 
 export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
   const dispatch = useAppDispatch();
-
-  const { text, typedText, errorText, initializeText, handleKeyPressed } =
+  
+  const [typeStart, setTypeStart] = useState<Boolean>(false);
+  
+  const { text, wordsCount, typedText, errorText, initializeText, handleKeyPressed } =
     useTextHandler();
 
   const {
@@ -24,10 +27,11 @@ export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
 
   const { display, typing } = useAppSelector((state) => state.keyboard);
 
-  const { typedWordsCount, accuracy } = useAppSelector((state) => state.result);
+  const { timeStarted, wpm, typedWordsCount, accuracy } = useAppSelector((state) => state.result);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
-
+  // setInitialTime
+  // setWpm,
   useEffect(() => {
     initializeText();
   }, [language, keyboard, punctuations, uppercase, lowercase, numbers, time]);
@@ -50,6 +54,17 @@ export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
     }
   };
 
+  const handlePressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!typeStart) {
+      setTypeStart(true);
+      dispatch(setInitialTime());
+    }
+
+
+    dispatch(setWpm());
+    handleKeyPressed(e)
+  }
+
   return (
     <>
       <div className="type">
@@ -57,16 +72,16 @@ export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
           <h3>
             <FaClock></FaClock>5.00s
           </h3>
-          <h3>{typedWordsCount}/50</h3>
+          <h3>{typedWordsCount}/{wordsCount}</h3>
           <h3>{accuracy.toFixed(0)}%</h3>
-          <h3>{80}</h3>
+          <h3>{wpm.toFixed(0)}</h3>
         </div>
         <span className="text" onClick={handleFocus}>
           <input
             type="text"
             ref={inputRef}
             onBlur={handleBlur}
-            onKeyDown={(e) => handleKeyPressed(e)}
+            onKeyDown={(e) => handlePressed(e)}
             // onChange={(e) => handleChange(e)}
             className="type-field"
           ></input>

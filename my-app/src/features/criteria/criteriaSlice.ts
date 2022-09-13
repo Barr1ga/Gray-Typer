@@ -12,10 +12,10 @@ interface CriteriaState {
 
 const initialState: CriteriaState = {
     language: "english",
-    keyboard: true,
+    keyboard: false,
     punctuations: false,
     uppercase: false,
-    lowercase: false,
+    lowercase: true,
     numbers: false,
     time: false,
 }
