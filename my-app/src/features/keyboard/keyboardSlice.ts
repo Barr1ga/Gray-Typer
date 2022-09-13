@@ -63,6 +63,7 @@ const keyboardSlice = createSlice({
     name: "keyboard",
     initialState,
     reducers: {
+        resetKeyboard: (state) => initialState,
         keyPressed: (state, action: PayloadAction<number>) => {
             state.pressedKeys.push(action.payload);
             if (state.pressedKeys.length === 3) {
@@ -78,5 +79,5 @@ const keyboardSlice = createSlice({
     }
 })
 
-export const { keyPressed, removeKeyFromPressed, setTyping } = keyboardSlice.actions;
+export const { resetKeyboard, keyPressed, removeKeyFromPressed, setTyping } = keyboardSlice.actions;
 export default keyboardSlice.reducer;

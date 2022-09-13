@@ -9,11 +9,18 @@ interface TextDisplayProps {}
 
 export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
   const dispatch = useAppDispatch();
-  
-  const [typeStart, setTypeStart] = useState<Boolean>(false);
-  
-  const { text, wordsCount, typedText, errorText, initializeText, handleKeyPressed } =
-    useTextHandler();
+  const [isFocus, setIsFocus] = useState(true);
+
+  const {
+    text,
+    wordsCount,
+    typedText,
+    errorText,
+    typeStart,
+    setTypeStart,
+    initializeText,
+    handleKeyPressed,
+  } = useTextHandler();
 
   const {
     language,
@@ -27,28 +34,31 @@ export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
 
   const { display, typing } = useAppSelector((state) => state.keyboard);
 
-  const { timeStarted, wpm, typedWordsCount, accuracy } = useAppSelector((state) => state.result);
+  const { timeStarted, wpm, typedWordsCount, accuracy } = useAppSelector(
+    (state) => state.result
+  );
 
   const inputRef = useRef<HTMLInputElement | null>(null);
-  // setInitialTime
-  // setWpm,
+
   useEffect(() => {
     initializeText();
   }, [language, keyboard, punctuations, uppercase, lowercase, numbers, time]);
 
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []);
-
   const handleFocus = () => {
+    setIsFocus(true);
+
     if (inputRef.current) {
       inputRef.current.focus();
     }
   };
 
+  useEffect(() => {
+    handleFocus();
+  }, []);
+
   const handleBlur = () => {
+    setIsFocus(false);
+
     if (typing) {
       dispatch(setTyping(false));
     }
@@ -60,10 +70,9 @@ export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
       dispatch(setInitialTime());
     }
 
-
     dispatch(setWpm());
-    handleKeyPressed(e)
-  }
+    handleKeyPressed(e);
+  };
 
   return (
     <>
@@ -72,7 +81,9 @@ export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
           <h3>
             <FaClock></FaClock>5.00s
           </h3>
-          <h3>{typedWordsCount}/{wordsCount}</h3>
+          <h3>
+            {typedWordsCount}/{wordsCount}
+          </h3>
           <h3>{accuracy.toFixed(0)}%</h3>
           <h3>{wpm.toFixed(0)}</h3>
         </div>
@@ -85,7 +96,7 @@ export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
             // onChange={(e) => handleChange(e)}
             className="type-field"
           ></input>
-          <p>
+          <p className={isFocus ? "" : "blurred"}>
             <span className="typed">{typedText}</span>
             <span className="error-typed">{errorText}</span>
             <span className={typing ? "caret" : "caret-blinking"}>|</span>

@@ -119,6 +119,28 @@ img {
   gap: 20px;
 }
 
+/* loading css */
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #fff;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* switch css */
 .form-switch {
   display: inline-block;
@@ -152,7 +174,6 @@ img {
   box-shadow: 0 2px 2px #878597;
   transform: translate3d(2px, 2px, 0);
   transition: all 0.2s ease-in-out;
-  
 }
 .form-switch:active i::after {
   width: 28px;
@@ -193,8 +214,6 @@ img {
   flex-grow: 1;
 }
 
-.type .text .typed,
-.type .text .error-typed,
 .type .text p {
   min-height: 100%;
   height: 100%;
@@ -205,6 +224,16 @@ img {
   text-align: left;
   letter-spacing: 0.05rem;
   cursor: pointer;
+  transition: 0.2s ease-out 0s;
+}
+
+.type .text .blurred{
+  -webkit-filter: blur(3px);
+  -moz-filter: blur(3px);
+  -o-filter: blur(3px);
+  -ms-filter: blur(3px);
+  filter: blur(3px);
+  transition: 0.2s ease-out 0s;
 }
 
 .type .text .untyped {
@@ -289,13 +318,15 @@ img {
   display: flex;
   justify-content: space-between;
   opacity: 0.5;
+  gap: 50px;
 }
 
 .footer .nav {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   flex-wrap: wrap;
   flex: 0 1 500px;
+  gap: 0px 20px;
 }
 
 .footer .nav .item {
@@ -327,11 +358,12 @@ img {
   height: 25px;
   background-color: #6b6b77;
   opacity: 0.3;
-  margin: 0 10px;
+  /* margin: 0 10px; */
 }
 
 .criteria .form-switch {
   display: flex;
+  align-items: center;
 }
 
 .criteria .item {
@@ -358,9 +390,9 @@ img {
   gap: 10px;
 }
 
-/* .criteria .item:hover {
+.criteria .item:hover {
   background: #dad9e9;
-} */
+}
 
 .criteria .item:active {
   background: #dad9e9;
@@ -388,7 +420,7 @@ img {
 .extra-buttons {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   gap: 10px;
   font-size: 0.8rem;
   cursor: pointer;
@@ -411,6 +443,7 @@ img {
   gap: 10px;
 }
 
+.extra-buttons .options p,
 .extra-buttons .options {
   display: flex;
   align-items: center;
@@ -428,7 +461,7 @@ img {
   width: 0px !important;
   transition: 0.2s ease-out 0s;
   font-size: 0rem !important;
-  opacity: 0; 
+  opacity: 0;
 }
 
 .keyboard {
@@ -459,7 +492,7 @@ img {
 .keyboard span .key,
 .keyboard span .space {
   border: none;
-  border-radius:15px;
+  border-radius: 15px;
   background: #ebeaf2;
   border-top: 1px solid #fff;
   box-shadow: 5px 5px 10px #dad9e9, -5px -5px 10px #ffffff;

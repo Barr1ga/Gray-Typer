@@ -5,6 +5,6 @@ interface NumbersProps {
 }
 
 export const Numbers: React.FC<NumbersProps> = ({}) => {
-    return (<div className="letter-icon">23</div>);
+    return (<div className="letter-icon">#</div>);
 
 }

@@ -15,13 +15,14 @@ const initialState: ResultState = {
     errorCount: 0,
     typedCharactersCount: 0,
     typedWordsCount: 0,
-    accuracy: 100,
+    accuracy: 0,
 }
 
 const resultSlice = createSlice({
     name: "result",
     initialState,
     reducers: {
+        resetResults: (state) => initialState,
         incrementTypedWordsCount: (state) => {
             state.typedWordsCount += 1;
         },
@@ -47,6 +48,7 @@ const resultSlice = createSlice({
 });
 
 export const {
+    resetResults,
     incrementTypedWordsCount,
     incrementErrorCount,
     incrementTypedCharactersCount,
