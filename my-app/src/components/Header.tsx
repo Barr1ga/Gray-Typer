@@ -7,14 +7,6 @@ import useTextHandler from "../hooks/useTextHandler";
 interface HeaderProps {}
 
 export const Header: React.FC<HeaderProps> = ({}) => {
-  const {
-    resetTest,
-  } = useTextHandler();
-
-  const handleResetText = () => {
-    resetTest();
-  }
-
   return (
     <>
       <div className="header">
@@ -24,7 +16,7 @@ export const Header: React.FC<HeaderProps> = ({}) => {
       </div>
       <div className="extra-buttons">
         <div className="options">
-          <span className="combination" onClick={handleResetText}>
+          <span className="combination">
             <div className="key">TAB</div>
             <p>/</p>
             <div className="key">ESC</div>

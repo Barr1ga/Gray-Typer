@@ -9,8 +9,11 @@ import {
     incrementErrorCount,
     incrementTypedCharactersCount,
     incrementTypedWordsCount,
+    decrementTypedWordsCount,
     resetResults,
     setAccuracy,
+    setTotalWordsCount,
+    setCompleted,
 } from "../features/result/resultSlice";
 import useRandomInts from "./useRandomInts";
 import useRandomPunctuations from "./useRandomPunctuations"
@@ -27,23 +30,26 @@ const useTextHandler = () => {
     const dispatch = useAppDispatch();
     const [typedText, setTypedText] = useState<string>("");
     const [errorText, setErrorText] = useState<string>("");
-    const [wordsCount, setWordsCount] = useState<number>(0);
+    // const [wordsCount, setWordsCount] = useState<number>(0);
     const [text, setText] = useState<string>(
         ""
-        );
+    );
     const [typeStart, setTypeStart] = useState<Boolean>(false);
 
     const { getRandomInts, randomCountInt, getRandomNumbers } = useRandomInts();
     const { randomPunctuations, getRandomPunctations } = useRandomPunctuations();
 
+    const { totalWordsCount, errorCount, typedWordsCount, typedCharactersCount } =
+        useAppSelector((state) => state.result);
+
     const { keyIndex, typing } = useAppSelector(
         (state) => state.keyboard
-        );
+    );
 
-    const { sfxVolume } = useAppSelector(
+    const { sfxVolume, testLength } = useAppSelector(
         (state) => state.settings
     );
-    
+
     const [playOsuSfx] = useSound(osuClick, { volume: sfxVolume });
     const [playPunchSfx] = useSound(punchClick, { volume: sfxVolume });
     const [playBoomSfx] = useSound(boomClick, { volume: sfxVolume });
@@ -57,24 +63,42 @@ const useTextHandler = () => {
         numbers,
         time,
     } = useAppSelector((state) => state.criterias);
-    
-    let combinationKey = [];
 
-    const { errorCount, typedCharactersCount } =
-    useAppSelector((state) => state.result);
+    let combinationKey = [];
 
     const resetTest = () => {
         setTypedText("");
         setErrorText("");
-        setWordsCount(0);
+        // setWordsCount(0);
         initializeText();
         dispatch(resetResults());
         setTypeStart(false);
         resetKeyboard();
     }
-    
+
+    const getTextLength = () => {
+        if (testLength === "short") {
+            const count = 5;
+            dispatch(setTotalWordsCount(count));
+            return count;
+        }
+
+        if (testLength === "medium") {
+            const count = 25;
+            dispatch(setTotalWordsCount(count));
+            return count;
+        }
+
+        if (testLength === "long") {
+            const count = 50;
+            dispatch(setTotalWordsCount(count));
+            return count;
+        }
+    }
+
     const initializeText = () => {
-        let wordsArray = randomWords({ exactly: 25 });
+        const length = getTextLength();
+        let wordsArray = randomWords({ exactly: length });
         // resetTest();
 
         if (lowercase && uppercase) {
@@ -116,7 +140,8 @@ const useTextHandler = () => {
             wordsArray = wordsArray.map((word: string) => word.toUpperCase());
         }
 
-        setWordsCount(wordsArray.length);
+        dispatch(setTotalWordsCount(wordsArray.length));
+        // setWordsCount(wordsArray.length);
         setText(wordsArray.join(" "));
     }
 
@@ -163,6 +188,11 @@ const useTextHandler = () => {
 
             if (typedText.length !== 0) {
                 const deletedCharacter = typedText.slice(-1);
+
+                if (text.charAt(0) === " ") {
+                    dispatch(decrementTypedWordsCount());
+                }
+
                 setText(deletedCharacter.concat(text));
                 setTypedText(typedText.slice(0, -1));
             }
@@ -174,6 +204,7 @@ const useTextHandler = () => {
         }
 
         const indexPressed = keyIndex.indexOf(key.toLowerCase());
+
         dispatch(incrementTypedCharactersCount());
         dispatch(keyPressed(indexPressed));
 
@@ -205,15 +236,20 @@ const useTextHandler = () => {
 
         playOsuSfx();
 
-        if (text.charAt(0) === " ") {
+        
+        if (text.charAt(0) === " " || text.length === 1) {
             dispatch(incrementTypedWordsCount());
         }
 
         setTypedText(typedText.concat(key.charAt(key.length - 1)));
         setText(text.slice(1));
     };
+    
+    if (typedWordsCount === totalWordsCount) {
+        dispatch(setCompleted());
+    }
 
-    return { text, wordsCount, typedText, errorText, typeStart, setTypeStart, resetTest, initializeText, handleKeyPressed };
+    return { text, typedText, errorText, typeStart, setTypeStart, resetTest, initializeText, handleKeyPressed };
 }
 
 export default useTextHandler;

@@ -13,7 +13,6 @@ export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
 
   const {
     text,
-    wordsCount,
     typedText,
     errorText,
     typeStart,
@@ -34,7 +33,7 @@ export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
 
   const { display, typing } = useAppSelector((state) => state.keyboard);
 
-  const { timeStarted, wpm, typedWordsCount, accuracy } = useAppSelector(
+  const { timeStarted, wpm, typedWordsCount, totalWordsCount, accuracy } = useAppSelector(
     (state) => state.result
   );
 
@@ -82,7 +81,7 @@ export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
             <FaClock></FaClock>5.00s
           </h3>
           <h3>
-            {typedWordsCount}/{wordsCount}
+            {typedWordsCount}/{totalWordsCount}
           </h3>
           <h3>{accuracy.toFixed(0)}%</h3>
           <h3>{wpm.toFixed(0)}</h3>

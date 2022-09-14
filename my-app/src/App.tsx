@@ -4,24 +4,43 @@ import { Criteria } from "./components/Criteria";
 import { Footer } from "./components/customIcons/Footer";
 import { Header } from "./components/Header";
 import { KeyboardDisplay } from "./components/KeyboardDisplay";
+import { Results } from "./components/Results";
 import { TextDisplay } from "./components/TextDispaly";
 
 function App() {
   const { keyboard } = useAppSelector((state) => state.criterias);
   const { display, typing } = useAppSelector((state) => state.keyboard);
-
+  const { completed } = useAppSelector((state) => state.result);
+  console.log(completed);
   return (
     <div className="App">
       <div className="margin-content">
         <div style={typing ? display.none : display.block}>
           <Header></Header>
         </div>
-        <div className="type-stack">
-          <TextDisplay></TextDisplay>
-          <div className={keyboard ? "keyboard-panel" : "keyboard-panel keyboard-panel-hide"}>
-            <KeyboardDisplay></KeyboardDisplay>
+
+        {completed === true && (
+          <div className="result-stack">
+            asdads
+            <Results></Results>
           </div>
-        </div>
+        )}
+
+        {completed === false && (
+          <div className="type-stack">
+            <TextDisplay></TextDisplay>
+            <div
+              className={
+                keyboard
+                  ? "keyboard-panel"
+                  : "keyboard-panel keyboard-panel-hide"
+              }
+            >
+              <KeyboardDisplay></KeyboardDisplay>
+            </div>
+          </div>
+        )}
+
         <div style={typing ? display.none : display.block}>
           <Criteria></Criteria>
           <Footer></Footer>

@@ -523,3 +523,13 @@ img {
   /* border-color: #ec59ff; */
   /* box-shadow: 0 0 15px #ec59ff; */
 }
+
+
+/* results css */
+.result-stack {
+  margin: auto;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  flex-grow: 1;
+}

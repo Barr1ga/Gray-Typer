@@ -1,20 +1,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import moment from 'moment';
 interface ResultState {
+    completed: boolean,
     timeStarted: string,
     wpm: number,
     errorCount: number,
     typedCharactersCount: number,
     typedWordsCount: number,
+    totalWordsCount: number,
     accuracy: number,
 }
 
 const initialState: ResultState = {
+    completed: false,
     timeStarted: "",
     wpm: 0,
     errorCount: 0,
     typedCharactersCount: 0,
     typedWordsCount: 0,
+    totalWordsCount: 0,
     accuracy: 0,
 }
 
@@ -23,8 +27,17 @@ const resultSlice = createSlice({
     initialState,
     reducers: {
         resetResults: (state) => initialState,
+        setTotalWordsCount: (state, action: PayloadAction<number>) => {
+            state.totalWordsCount = action.payload;
+        },
+        setCompleted: (state) => {
+            state.completed = true;
+        },
         incrementTypedWordsCount: (state) => {
             state.typedWordsCount += 1;
+        },
+        decrementTypedWordsCount: (state) => {
+            state.typedWordsCount -= 1;
         },
         incrementErrorCount: (state) => {
             state.errorCount += 1;
@@ -49,7 +62,10 @@ const resultSlice = createSlice({
 
 export const {
     resetResults,
+    setTotalWordsCount,
+    setCompleted,
     incrementTypedWordsCount,
+    decrementTypedWordsCount,
     incrementErrorCount,
     incrementTypedCharactersCount,
     setAccuracy,

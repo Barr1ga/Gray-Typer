@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
 interface SettingState {
     sfxVolume: number,
+    testLength: string
 }
 
 const initialState: SettingState = {
     sfxVolume: .1,
+    testLength: "short"
 }
 
 const settingSlice = createSlice({
@@ -14,11 +15,15 @@ const settingSlice = createSlice({
     reducers: {
         setVolume: (state, action: PayloadAction<number>) => {
             state.sfxVolume = action.payload;
+        },
+        setTestLength: (state, action: PayloadAction<string>) => {
+            state.testLength = action.payload;
         }
     }
 });
 
 export const {
-    setVolume
+    setVolume,
+    setTestLength
 } = settingSlice.actions;
 export default settingSlice.reducer;
