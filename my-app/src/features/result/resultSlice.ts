@@ -3,7 +3,9 @@ import moment from 'moment';
 interface ResultState {
     completed: boolean,
     timeStarted: string,
-    wpm: number,
+    time: number,
+    grossWpm: number,
+    netWpm: number,
     errorCount: number,
     typedCharactersCount: number,
     typedWordsCount: number,
@@ -14,7 +16,9 @@ interface ResultState {
 const initialState: ResultState = {
     completed: false,
     timeStarted: "",
-    wpm: 0,
+    time: 0,
+    grossWpm: 0,
+    netWpm: 0,
     errorCount: 0,
     typedCharactersCount: 0,
     typedWordsCount: 0,
@@ -51,12 +55,21 @@ const resultSlice = createSlice({
         setInitialTime: (state) => {
             state.timeStarted = moment(new Date()).toString();
         },
-        setWpm: (state) => {
+        setGrossWpm: (state) => {
             const timeNow = moment(new Date());
             const duration = moment.duration(timeNow.diff(state.timeStarted));
             const minutesDuration = duration.asMinutes();
-            state.wpm = (state.typedCharactersCount / 5) / minutesDuration;
-        }
+            state.time = minutesDuration;
+            state.grossWpm = (state.typedCharactersCount / 5) / minutesDuration;
+        },
+        setNetWpm: (state) => {
+            const timeNow = moment(new Date());
+            const duration = moment.duration(timeNow.diff(state.timeStarted));
+            const minutesDuration = duration.asMinutes();
+            state.time = minutesDuration;
+            state.grossWpm = (state.typedCharactersCount / 5) / minutesDuration;
+            // state.netWpm = state.grossWpm - ();
+        },
     }
 });
 
@@ -70,6 +83,7 @@ export const {
     incrementTypedCharactersCount,
     setAccuracy,
     setInitialTime,
-    setWpm,
+    setGrossWpm,
+    setNetWpm,
 } = resultSlice.actions;
 export default resultSlice.reducer;

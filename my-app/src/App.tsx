@@ -11,7 +11,6 @@ function App() {
   const { keyboard } = useAppSelector((state) => state.criterias);
   const { display, typing } = useAppSelector((state) => state.keyboard);
   const { completed } = useAppSelector((state) => state.result);
-  console.log(completed);
   return (
     <div className="App">
       <div className="margin-content">
@@ -21,7 +20,6 @@ function App() {
 
         {completed === true && (
           <div className="result-stack">
-            asdads
             <Results></Results>
           </div>
         )}

@@ -15,8 +15,8 @@ import {
     setTotalWordsCount,
     setCompleted,
 } from "../features/result/resultSlice";
-import useRandomInts from "./useRandomInts";
-import useRandomPunctuations from "./useRandomPunctuations"
+import RandomInts from "../features/helpers/RandomInts";
+import RandomPunctuations from "../features/helpers/RandomPunctuations"
 import useSound from 'use-sound';
 // import osuClick from '../../public/assets/osu_click.mp3';
 
@@ -36,8 +36,8 @@ const useTextHandler = () => {
     );
     const [typeStart, setTypeStart] = useState<Boolean>(false);
 
-    const { getRandomInts, randomCountInt, getRandomNumbers } = useRandomInts();
-    const { randomPunctuations, getRandomPunctations } = useRandomPunctuations();
+    const { getRandomSingleNumber, getRandomNumbers } = RandomInts();
+    const { getRandomPunctations } = RandomPunctuations();
 
     const { totalWordsCount, errorCount, typedWordsCount, typedCharactersCount } =
         useAppSelector((state) => state.result);
@@ -78,7 +78,7 @@ const useTextHandler = () => {
 
     const getTextLength = () => {
         if (testLength === "short") {
-            const count = 5;
+            const count = 15;
             dispatch(setTotalWordsCount(count));
             return count;
         }
@@ -99,45 +99,45 @@ const useTextHandler = () => {
     const initializeText = () => {
         const length = getTextLength();
         let wordsArray = randomWords({ exactly: length });
-        // resetTest();
 
         if (lowercase && uppercase) {
-            const uppercaseIdx = getRandomInts();
-            console.log(uppercaseIdx)
+            const count = getRandomSingleNumber(wordsArray.length);
+            const uppercaseIdxs = getRandomNumbers(count, wordsArray.length);
 
-            wordsArray.forEach((word: string, idx: number) => {
-                if (uppercaseIdx.includes(idx)) {
-                    wordsArray[idx] = wordsArray[idx].charAt(0).toUpperCase().concat(wordsArray[idx].slice(1));
-                }
+            uppercaseIdxs.forEach((int: number) => {
+                wordsArray[int] = wordsArray[int]?.charAt(0).toUpperCase().concat(wordsArray[int].slice(1));
             })
         }
 
         if (numbers) {
-            const numberIdxs = getRandomInts();
-            const tempRandCountInt = getRandomNumbers(numberIdxs.length);
+            const count = getRandomSingleNumber(wordsArray.length);
+            const numberIdxs = getRandomNumbers(count, wordsArray.length);
+            const tempRandCountInt = getRandomNumbers(count, 1000);
 
-            numberIdxs.forEach((number: number, idx: number) => {
-                wordsArray[number] = wordsArray[number].concat(tempRandCountInt[idx]?.toString());
+            numberIdxs.forEach((idx: number) => {
+                wordsArray[idx] = wordsArray[idx]?.concat(tempRandCountInt[idx]?.toString());
             })
         }
 
         if (punctuations) {
-            const punctuationIdxs = getRandomInts();
-            getRandomPunctations(punctuationIdxs.length);
-
-            randomPunctuations.forEach((punctuation: string, idx: number) => {
-                if (punctuation?.length === 1) {
-                    wordsArray[punctuationIdxs[idx]] = wordsArray[punctuationIdxs[idx]]?.concat(punctuation);
-                } else {
-                    wordsArray[punctuationIdxs[idx]] = punctuation.
-                        charAt(0).concat(wordsArray[punctuationIdxs[idx]]).
-                        concat(punctuation.charAt(punctuation.length - 1));
+            const count = getRandomSingleNumber(wordsArray.length);
+            const punctuationIdxs = getRandomNumbers(count, wordsArray.length);
+            const punctuations = getRandomPunctations(count);
+            console.log(punctuations)
+            punctuationIdxs.forEach((idx) => {
+                if (punctuations[idx]?.length === 1) {
+                    wordsArray[idx] = wordsArray[idx]?.concat(punctuations[idx]);
+                } 
+                else {
+                    wordsArray[idx] = punctuations[idx]?.
+                        charAt(0).concat(wordsArray[idx]).
+                        concat(punctuations[idx]?.charAt(punctuations[idx].length - 1));
                 }
             })
         }
 
-        if (!lowercase) {
-            wordsArray = wordsArray.map((word: string) => word.toUpperCase());
+        if (!lowercase && uppercase) {
+            wordsArray = wordsArray.map((word: string) => word?.toUpperCase());
         }
 
         dispatch(setTotalWordsCount(wordsArray.length));
@@ -236,7 +236,7 @@ const useTextHandler = () => {
 
         playOsuSfx();
 
-        
+
         if (text.charAt(0) === " " || text.length === 1) {
             dispatch(incrementTypedWordsCount());
         }
@@ -244,10 +244,9 @@ const useTextHandler = () => {
         setTypedText(typedText.concat(key.charAt(key.length - 1)));
         setText(text.slice(1));
     };
-    
-    if (typedWordsCount === totalWordsCount) {
-        dispatch(setCompleted());
-    }
+
+    // console.log(totalWordsCount)
+
 
     return { text, typedText, errorText, typeStart, setTypeStart, resetTest, initializeText, handleKeyPressed };
 }
