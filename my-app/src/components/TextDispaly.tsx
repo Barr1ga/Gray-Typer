@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setTyping } from "../features/keyboard/keyboardSlice";
-import { FaClock } from "react-icons/fa";
 import useTextHandler from "../hooks/useTextHandler";
-import { setCompleted, setInitialTime, setGrossWpm } from "../features/result/resultSlice";
+import { setCompleted, setInitialTime } from "../features/result/resultSlice";
 
 interface TextDisplayProps {}
 
@@ -33,7 +32,7 @@ export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
 
   const { display, typing } = useAppSelector((state) => state.keyboard);
 
-  const { grossWpm, typedWordsCount, totalWordsCount, accuracy } = useAppSelector(
+  const { adjustedSpeed, errorCount, grossWpm, typedWordsCount, totalWordsCount, accuracy } = useAppSelector(
     (state) => state.result
   );
 
@@ -69,7 +68,6 @@ export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
       dispatch(setInitialTime());
     }
 
-    dispatch(setGrossWpm());
     handleKeyPressed(e);
   };
   
@@ -77,7 +75,7 @@ export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
     dispatch(setTyping(false));
     dispatch(setCompleted());
   }
-
+  console.log(errorCount)
   return (
     <>
       <div className="type">
@@ -89,7 +87,7 @@ export const TextDisplay: React.FC<TextDisplayProps> = ({}) => {
             {typedWordsCount}/{totalWordsCount}
           </h3>
           <h3>{accuracy.toFixed(0)}%</h3>
-          <h3>{grossWpm.toFixed(0)}</h3>
+          <h3>{grossWpm[grossWpm.length - 1]?.toFixed(0)}</h3>
         </div>
         <span className="text" onClick={handleFocus}>
           <input

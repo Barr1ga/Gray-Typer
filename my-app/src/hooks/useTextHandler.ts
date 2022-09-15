@@ -14,6 +14,8 @@ import {
     setAccuracy,
     setTotalWordsCount,
     setCompleted,
+    setGrossWpm,
+    setAdjustedSpeed,
 } from "../features/result/resultSlice";
 import RandomInts from "../features/helpers/RandomInts";
 import RandomPunctuations from "../features/helpers/RandomPunctuations"
@@ -30,6 +32,8 @@ const useTextHandler = () => {
     const dispatch = useAppDispatch();
     const [typedText, setTypedText] = useState<string>("");
     const [errorText, setErrorText] = useState<string>("");
+    const [tempErrorCount, setTempErrorCount] = useState<number>(0);
+
     // const [wordsCount, setWordsCount] = useState<number>(0);
     const [text, setText] = useState<string>(
         ""
@@ -64,8 +68,6 @@ const useTextHandler = () => {
         time,
     } = useAppSelector((state) => state.criterias);
 
-    let combinationKey = [];
-
     const resetTest = () => {
         setTypedText("");
         setErrorText("");
@@ -78,7 +80,7 @@ const useTextHandler = () => {
 
     const getTextLength = () => {
         if (testLength === "short") {
-            const count = 15;
+            const count = 5;
             dispatch(setTotalWordsCount(count));
             return count;
         }
@@ -127,7 +129,7 @@ const useTextHandler = () => {
             punctuationIdxs.forEach((idx) => {
                 if (punctuations[idx]?.length === 1) {
                     wordsArray[idx] = wordsArray[idx]?.concat(punctuations[idx]);
-                } 
+                }
                 else {
                     wordsArray[idx] = punctuations[idx]?.
                         charAt(0).concat(wordsArray[idx]).
@@ -210,10 +212,10 @@ const useTextHandler = () => {
 
         // wrong character
         if (key !== text.charAt(0)) {
+            setTempErrorCount((prev) => prev + 1);
             playPunchSfx();
             // playBoomSfx();
-            dispatch(incrementErrorCount());
-
+            
             if (errorText.length === 20) {
                 return;
             }
@@ -229,15 +231,21 @@ const useTextHandler = () => {
             return;
         }
 
+        
         // correct character
         if (errorText.length > 0) {
             return;
         }
 
         playOsuSfx();
-
-
+        
+        
         if (text.charAt(0) === " " || text.length === 1) {
+            dispatch(incrementErrorCount(tempErrorCount));
+            setTempErrorCount(0);
+
+            dispatch(setGrossWpm());
+            dispatch(setAdjustedSpeed());
             dispatch(incrementTypedWordsCount());
         }
 

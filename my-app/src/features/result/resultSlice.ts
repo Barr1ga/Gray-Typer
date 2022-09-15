@@ -4,9 +4,10 @@ interface ResultState {
     completed: boolean,
     timeStarted: string,
     time: number,
-    grossWpm: number,
-    netWpm: number,
-    errorCount: number,
+    adjustedSpeed: number[],
+    grossWpm: number[],
+    netWpm: number[],
+    errorCount: number[],
     typedCharactersCount: number,
     typedWordsCount: number,
     totalWordsCount: number,
@@ -17,9 +18,10 @@ const initialState: ResultState = {
     completed: false,
     timeStarted: "",
     time: 0,
-    grossWpm: 0,
-    netWpm: 0,
-    errorCount: 0,
+    adjustedSpeed: [],
+    grossWpm: [],
+    netWpm: [],
+    errorCount: [],
     typedCharactersCount: 0,
     typedWordsCount: 0,
     totalWordsCount: 0,
@@ -43,14 +45,15 @@ const resultSlice = createSlice({
         decrementTypedWordsCount: (state) => {
             state.typedWordsCount -= 1;
         },
-        incrementErrorCount: (state) => {
-            state.errorCount += 1;
+        incrementErrorCount: (state, action: PayloadAction<number>) => {
+            state.errorCount[state.typedWordsCount] = action.payload;
         },
         incrementTypedCharactersCount: (state) => {
             state.typedCharactersCount += 1;
         },
         setAccuracy: (state) => {
-            state.accuracy = 100 - ((state.errorCount / state.typedCharactersCount) * 100);
+            const totalErrorCount = state.errorCount.reduce((a: number,b: number) => a + b, 0);
+            state.accuracy = 100 - ((totalErrorCount / state.typedCharactersCount) * 100);
         },
         setInitialTime: (state) => {
             state.timeStarted = moment(new Date()).toString();
@@ -60,14 +63,17 @@ const resultSlice = createSlice({
             const duration = moment.duration(timeNow.diff(state.timeStarted));
             const minutesDuration = duration.asMinutes();
             state.time = minutesDuration;
-            state.grossWpm = (state.typedCharactersCount / 5) / minutesDuration;
+            state.grossWpm[state.typedWordsCount] = (state.typedCharactersCount / 5) / minutesDuration;
+        },
+        setAdjustedSpeed: (state) => {
+            state.adjustedSpeed[state.typedWordsCount] = state.grossWpm[state.typedWordsCount] * (state.accuracy / 100);
         },
         setNetWpm: (state) => {
-            const timeNow = moment(new Date());
-            const duration = moment.duration(timeNow.diff(state.timeStarted));
-            const minutesDuration = duration.asMinutes();
-            state.time = minutesDuration;
-            state.grossWpm = (state.typedCharactersCount / 5) / minutesDuration;
+            // const timeNow = moment(new Date());
+            // const duration = moment.duration(timeNow.diff(state.timeStarted));
+            // const minutesDuration = duration.asMinutes();
+            // state.time = minutesDuration;
+            // state.grossWpm = (state.typedCharactersCount / 5) / minutesDuration;
             // state.netWpm = state.grossWpm - ();
         },
     }
@@ -84,6 +90,7 @@ export const {
     setAccuracy,
     setInitialTime,
     setGrossWpm,
+    setAdjustedSpeed,
     setNetWpm,
 } = resultSlice.actions;
 export default resultSlice.reducer;
