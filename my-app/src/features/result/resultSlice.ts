@@ -13,7 +13,7 @@ interface ResultState {
     totalWordsCount: number,
     accuracy: number,
 }
-
+ 
 const initialState: ResultState = {
     completed: false,
     timeStarted: "",

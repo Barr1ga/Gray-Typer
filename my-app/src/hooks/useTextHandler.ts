@@ -80,7 +80,7 @@ const useTextHandler = () => {
 
     const getTextLength = () => {
         if (testLength === "short") {
-            const count = 5;
+            const count = 15;
             dispatch(setTotalWordsCount(count));
             return count;
         }

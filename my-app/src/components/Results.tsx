@@ -35,61 +35,50 @@ export const Results: React.FC<ResultsProps> = ({}) => {
 
   return (
     <>
-      <Graph></Graph>
-      <div className="results">
-        <div className="cards">
-          {/* <div className="panel">
-            <h3>Net WPM</h3>
-            <h1 className="result-number">{grossWpm.toFixed(0)}</h1>
-          </div> */}
-          <div className="panel">
-            <h3>Adjusted speed</h3>
-            <h1 className="result-number">
-              {adjustedSpeed[adjustedSpeed.length - 1]?.toFixed(0)}
-            </h1>
-          </div>
-          <div className="panel">
-            <h3>Gross WPM</h3>
-            <h1 className="result-number">
-              {grossWpm[grossWpm.length - 1]?.toFixed(0)}
-            </h1>
-            {/* <small>{grossWpm.toFixed(2)}</small> */}
-          </div>
-          <div className="panel">
-            <h3>Accuracy</h3>
-            <h1 className="result-number">{accuracy.toFixed(0)}%</h1>
-          </div>
-          <div className="panel">
-            <h3>Errors</h3>
-            <h1 className="result-number">{totalErrorCount}</h1>
-          </div>
-        </div>
+      <div className="result-stack">
+        <Graph></Graph>
+        <div className="results">
+          <div className="cards">
+            <div className="panel">
+              <p>Adjusted speed</p>
+              <h2 className="sub-result-number">
+                {adjustedSpeed[adjustedSpeed.length - 1]?.toFixed(0)}
+              </h2>
+            </div>
 
-        <div className="cards">
-          <div className="panel">
-            <p>Date and Time Started</p>
-            <h2 className="sub-result-number">
-              {moment(timeStarted).format("MM/DD/YYYY, h:mm:ss a")}
-            </h2>
-          </div>
+            <div className="panel">
+              <p>Gross WPM</p>
+              <h2 className="sub-result-number">
+                {grossWpm[grossWpm.length - 1]?.toFixed(0)}
+              </h2>
+            </div>
+            <div className="panel">
+              <p>Accuracy</p>
+              <h2 className="sub-result-number">{accuracy.toFixed(0)}%</h2>
+            </div>
+            <div className="panel">
+              <p>Errors</p>
+              <h2 className="sub-result-number">{totalErrorCount}</h2>
+            </div>
 
-          <div className="panel">
-            <p>Language</p>
-            <h2 className="sub-result-number">{languageFormatted}</h2>
-          </div>
-          <div className="panel">
-            <p>Characters</p>
-            <h2 className="sub-result-number">{typedCharactersCount}</h2>
-          </div>
-          <div className="panel">
-            <p>Words</p>
-            <h2 className="sub-result-number">
-              {typedWordsCount} / {totalWordsCount}
-            </h2>
-          </div>
-          <div className="panel">
-            <p>Time</p>
-            <h2 className="sub-result-number">{secondsFormatted}s</h2>
+            <div className="panel">
+              <p>Language</p>
+              <h2 className="sub-result-number">{languageFormatted}</h2>
+            </div>
+            <div className="panel">
+              <p>Characters</p>
+              <h2 className="sub-result-number">{typedCharactersCount}</h2>
+            </div>
+            <div className="panel">
+              <p>Words</p>
+              <h2 className="sub-result-number">
+                {typedWordsCount} / {totalWordsCount}
+              </h2>
+            </div>
+            <div className="panel">
+              <p>Time</p>
+              <h2 className="sub-result-number">{secondsFormatted}s</h2>
+            </div>
           </div>
         </div>
       </div>

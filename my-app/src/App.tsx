@@ -18,11 +18,7 @@ function App() {
           <Header></Header>
         </div>
 
-        {completed === true && (
-          <div className="result-stack">
-            <Results></Results>
-          </div>
-        )}
+        {completed === true && <Results></Results>}
 
         {completed === false && (
           <div className="type-stack">

@@ -25,9 +25,10 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({}) => {
   const dispatch = useAppDispatch();
 
   const { pressedKeys, typing } = useAppSelector((state) => state.keyboard);
+  const { theme } = useAppSelector((state) => state.settings);
 
   const keyRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  
+
   const HandleKeyPressed = (idx: number, key: string) => {
     dispatch(keyPressed(idx));
   };
@@ -39,7 +40,10 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({}) => {
           {firstRowKeys.map((key, idx) => (
             <button
               key={key + idx}
-              className={pressedKeys.includes(idx) && typing ? "key clicked" : "key"}
+              className={
+                pressedKeys.includes(idx) && typing ? "key clicked" : "key"
+              }
+              style={theme.keyboardKeys}
               // className="key"
               ref={(ref) => (keyRefs.current[idx] = ref)}
               onClick={() => HandleKeyPressed(idx, key)}
@@ -52,7 +56,11 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({}) => {
           {secondRowKeys.map((key, idx) => (
             <button
               key={key + idx + firstRowKeys.length}
-              className={pressedKeys.includes(idx + firstRowKeys.length) && typing ? "key clicked" : "key"}
+              className={
+                pressedKeys.includes(idx + firstRowKeys.length) && typing
+                  ? "key clicked"
+                  : "key"
+              }
               // className="key"
 
               ref={(ref) => (keyRefs.current[idx + firstRowKeys.length] = ref)}
@@ -66,7 +74,13 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({}) => {
           {thirdRowKeys.map((key, idx) => (
             <button
               key={key + idx + firstRowKeys.length + secondRowKeys.length}
-              className={pressedKeys.includes(idx + firstRowKeys.length + secondRowKeys.length) && typing ? "key clicked" : "key"}
+              className={
+                pressedKeys.includes(
+                  idx + firstRowKeys.length + secondRowKeys.length
+                ) && typing
+                  ? "key clicked"
+                  : "key"
+              }
               // className="key"
 
               ref={(ref) =>
@@ -87,7 +101,16 @@ export const KeyboardDisplay: React.FC<KeyboardDisplayProps> = ({}) => {
         </span>
         <span>
           <button
-            className={pressedKeys.includes(firstRowKeys.length + secondRowKeys.length + thirdRowKeys.length + 1) && typing ? "space clicked" : "space"}
+            className={
+              pressedKeys.includes(
+                firstRowKeys.length +
+                  secondRowKeys.length +
+                  thirdRowKeys.length +
+                  1
+              ) && typing
+                ? "space clicked"
+                : "space"
+            }
             // className="space"
             ref={(ref) =>
               (keyRefs.current[
